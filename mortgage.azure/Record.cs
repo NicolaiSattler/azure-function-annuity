@@ -1,4 +1,4 @@
-namespace hypotheek.azure
+namespace Mortgage.Azure
 {
     public class Record
     {

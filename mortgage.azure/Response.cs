@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace hypotheek.azure
+namespace Mortgage.Azure
 {
     public class Response
     {

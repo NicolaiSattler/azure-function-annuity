@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 
-namespace hypotheek.azure
+namespace Mortgage.Azure
 {
     public static class CalculateAnnuity
     {
