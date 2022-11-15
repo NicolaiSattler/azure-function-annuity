@@ -6,7 +6,7 @@ using Moq;
 using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.Primitives;
 
-namespace hypotheek.azure.test;
+namespace Mortgage.Azure.Test;
 
 [TestClass]
 public class CalculateAnnuityTests
