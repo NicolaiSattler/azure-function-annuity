@@ -50,4 +50,30 @@ public class CalculateAnnuityTests
         response.Loan.ShouldBe(loan);
         response.Process.Count().ShouldBe(expectedMonths);
     }
+
+    [TestMethod]
+    public void CalculateAnnuity_WithInvalidParameters_ShouldReturn_BadRequestObject()
+    {
+        //Arrange
+        var interest = "wrongparameter";
+        var years = 10;
+        var loan = 20000;
+        var expectedMonths = years * 12;
+
+        var queryParams = new Dictionary<string, StringValues>();
+        queryParams.Add("loan", new StringValues(loan.ToString()));
+        queryParams.Add("years", new StringValues(years.ToString()));
+        queryParams.Add("interest", new StringValues(interest));
+
+        _mockedRequest?.Setup(m => m.Query)
+                       .Returns(new QueryCollection(queryParams));
+
+        //Act
+        var response = CalculateAnnuity.Run(_mockedRequest?.Object, _mockedLogger?.Object);
+
+
+        //Assert
+        response.ShouldNotBeNull();
+        response.ShouldBeOfType<BadRequestResult>();
+    }
 }
