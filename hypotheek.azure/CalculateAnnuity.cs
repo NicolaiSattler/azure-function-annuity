@@ -36,8 +36,7 @@ namespace hypotheek.azure
             {
 
                 var response = CreateResponse(loan, years, interest);
-                var responseAsJson = JsonSerializer.Serialize(response);
-                return new OkObjectResult(response);
+                return new JsonResult(response);
             }
             else
             {
