@@ -1,4 +1,4 @@
-﻿global using hypotheek;
+﻿global using Mortgage.Console;
 
 int loan = 0;
 int years = 0;
@@ -11,7 +11,8 @@ const string interestMessage = "Please supply the intrest percentage (%):";
 Console.WriteLine("Welcome");
 Console.WriteLine("Let's calculate the annuity of a loan.");
 
-Func<string, double> RetrieveUserInputFunc = (message) => {
+Func<string, double> RetrieveUserInputFunc = (message) =>
+{
     var output = 0.0;
 
     while (output == 0)

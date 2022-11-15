@@ -1,4 +1,4 @@
-namespace hypotheek;
+namespace Mortgage.Console;
 
 public class Calculation
 {
