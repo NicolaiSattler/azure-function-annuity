@@ -1,15 +1,29 @@
 ﻿global using Mortgage.Console;
 
-int loan = 0;
-int years = 0;
-double interest = 0;
-
 const string loanMessage = "Please supply the total loan amount:";
 const string yearMessage = "Please supply the total years of the loan:";
 const string interestMessage = "Please supply the intrest percentage (%):";
 
-Console.WriteLine("Welcome");
-Console.WriteLine("Let's calculate the annuity of a loan.");
+Action<int, int, double> Display = (loan, years, interest) =>
+{
+    double remainingLoan = loan;
+    double percentage = (interest / 100) / 12;
+
+    var totalMonths = years * 12;
+    var annuity = Calculation.CalculateAnnuity(loan, years, interest);
+
+    for (int i = 0; i < totalMonths; i++)
+    {
+        var interestValue = Math.Round(remainingLoan * percentage, 2);
+        var liquidate = annuity - interestValue;
+
+        remainingLoan = Math.Round(remainingLoan - liquidate, 2);
+
+        Console.WriteLine($"Month: {i + 1}, Liquidate: {Math.Round(liquidate, 2)}, Interest: {interestValue}, Remaining loan: {remainingLoan}");
+    }
+
+    Console.WriteLine($"Monthly: {Math.Round(annuity, 2)}, Total: {annuity * years * 12}");
+};
 
 Func<string, double> RetrieveUserInputFunc = (message) =>
 {
@@ -22,8 +36,10 @@ Func<string, double> RetrieveUserInputFunc = (message) =>
 
         if (!double.TryParse(input, out output))
         {
-            Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop - 2);
-            Console.WriteLine("Invalid input..");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop - 1);
+            Console.WriteLine($"Invalid input.. '{input}'");
+            Console.ForegroundColor = ConsoleColor.White;
         }
         else break;
     }
@@ -31,28 +47,11 @@ Func<string, double> RetrieveUserInputFunc = (message) =>
     return output;
 };
 
-loan = (int)RetrieveUserInputFunc(loanMessage);
-years = (int)RetrieveUserInputFunc(yearMessage);
-interest = RetrieveUserInputFunc(interestMessage);
+Console.WriteLine("Welcome");
+Console.WriteLine("Let's calculate the annuity of a loan.");
 
-var annuity = Calculation.CalculateAnnuity(loan, years, interest);
-Console.WriteLine($"Monthly: {annuity}, Total: {annuity * years * 12}");
+int loan = (int)RetrieveUserInputFunc(loanMessage);
+int years = (int)RetrieveUserInputFunc(yearMessage);
+double interest = RetrieveUserInputFunc(interestMessage);
 
-Display();
-
-void Display()
-{
-    double remainingLoan = loan;
-    double percentage = (interest / 100) / 12;
-    var totalMonths = years * 12;
-
-    for (int i = 0; i < totalMonths; i++)
-    {
-        var interestValue = Math.Round(remainingLoan * percentage, 2);
-        var liquidate = annuity - interestValue;
-
-        remainingLoan = Math.Round(remainingLoan - liquidate, 2);
-
-        Console.WriteLine($"Month: {i + 1}, Liquidate: {liquidate}, Interest: {interestValue}, Remaining loan: {remainingLoan}");
-    }
-}
+Display(loan, years, interest);
